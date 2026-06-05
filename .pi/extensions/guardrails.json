@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/@aliou/pi-guardrails@0.13.2/schema.json",
+  "pathAccess": {
+    "allowedPaths": [
+      "~/.pi/agent/skills/wl/",
+      "/dev/",
+      "/tmp/pi-github-repos/perdalum/footnotes/",
+      "/tmp/pi-github-repos/perdalum/footnotes-go/internal/footnotes/",
+      "/tmp/",
+      "~/wstp-profile"
+    ]
+  }
+}
