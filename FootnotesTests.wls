@@ -19,8 +19,8 @@ check["render no footnotes",
     "Plain text without markers."
 ];
 
-check["render one source footnote",
-    R["Wikipedia\:0192(https://wikipedia.org) is mentioned."],
+check["render one source footnote with optional marker spacing",
+    R["Wikipedia \:0192(https://wikipedia.org) is mentioned."],
     "Wikipedia\:00b9 is mentioned.\n\n---\n1) https://wikipedia.org"
 ];
 
@@ -29,9 +29,19 @@ check["render multiple source footnotes in encounter order",
     "A\:00b9 B\:00b2 C\:00b3\n\n---\n1) first\n2) second\n3) third"
 ];
 
-check["render preserves surrounding whitespace",
+check["render collapses whitespace before the marker",
     R["word \:0192(note) end"],
-    "word \:00b9 end\n\n---\n1) note"
+    "word\:00b9 end\n\n---\n1) note"
+];
+
+check["render collapses tab before the marker",
+    R["word\t\:0192(note) end"],
+    "word\:00b9 end\n\n---\n1) note"
+];
+
+check["render does not collapse across line breaks",
+    R["word \n \:0192(note) end"],
+    "word \n \:00b9 end\n\n---\n1) note"
 ];
 
 check["render trims footnote text in the block",
@@ -56,12 +66,22 @@ check["render trims transformed body trailing whitespace before block",
 
 check["reverse rendered footnotes",
     U["When I was a child\:00b9, I loved sci-fi and the first tv-show, that I remember, is Space: 1999\:00b2, that aired on the Danish National Broadcast Service\:00b3.\n\n---\n1) born in 1968\n2) https://en.wikipedia.org/wiki/Space:_1999\n3) DR, https://dr.dk, and https://lex.dk/DR"],
-    "When I was a child\:0192(born in 1968), I loved sci-fi and the first tv-show, that I remember, is Space: 1999\:0192(https://en.wikipedia.org/wiki/Space:_1999), that aired on the Danish National Broadcast Service\:0192(DR, https://dr.dk, and https://lex.dk/DR)."
+    "When I was a child \:0192(born in 1968), I loved sci-fi and the first tv-show, that I remember, is Space: 1999 \:0192(https://en.wikipedia.org/wiki/Space:_1999), that aired on the Danish National Broadcast Service \:0192(DR, https://dr.dk, and https://lex.dk/DR)."
+];
+
+check["reverse inserts marker spacing",
+    U["word\:00b9.\n\n---\n1) note"],
+    "word \:0192(note)."
+];
+
+check["reverse preserves existing marker spacing",
+    U["word \:00b9.\n\n---\n1) note"],
+    "word \:0192(note)."
 ];
 
 check["reverse ignores existing source annotations",
     U["A\:00b9 and B\:0192(new source note).\n\n---\n1) old rendered note"],
-    "A\:0192(old rendered note) and B\:0192(new source note)."
+    "A \:0192(old rendered note) and B\:0192(new source note)."
 ];
 
 check["render mixed input normalizes to one block",
@@ -86,17 +106,17 @@ checkFailure["out of order references fail", U["A\:00b2 then B\:00b9.\n\n---\n1)
 
 check["unrelated superscript ignored",
     U["E = mc\:00b2 and A\:00b9.\n\n---\n1) note"],
-    "E = mc\:00b2 and A\:0192(note)."
+    "E = mc\:00b2 and A \:0192(note)."
 ];
 
 check["superscript inside source annotation ignored",
     U["A\:00b9 and B\:0192(x\:00b2).\n\n---\n1) note"],
-    "A\:0192(note) and B\:0192(x\:00b2)."
+    "A \:0192(note) and B\:0192(x\:00b2)."
 ];
 
 check["block entry horizontal whitespace",
     U["A\:00b9 and B\:00b2.\n\n---\n1)\tnote one\n2)   note two"],
-    "A\:0192(note one) and B\:0192(note two)."
+    "A \:0192(note one) and B \:0192(note two)."
 ];
 
 If[$failures > 0, Print[$failures, " test(s) failed."]; Exit[1], Print["All tests passed."]];

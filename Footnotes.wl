@@ -219,6 +219,10 @@ detectRenderedBlock[input_String] := Module[
     <|"Found" -> True, "Body" -> body, "Entries" -> entries|>
 ];
 
+lastOutputCharacter[out_List] := If[Length[out] === 0, "", Last[Characters[Last[out]]]];
+
+needsSpaceBeforeUnrenderedMarker[out_List] := Length[out] > 0 && ! whitespaceQ[lastOutputCharacter[out]];
+
 reverseWithBlock[block_Association] := Module[
     {body = block["Body"], entries = block["Entries"], chars, out = {}, i = 1,
      end, decoded, n, next},
@@ -235,6 +239,7 @@ reverseWithBlock[block_Association] := Module[
         If[decoded[[3]],
             {n, next} = decoded[[1 ;; 2]];
             If[1 <= n <= Length[entries],
+                If[needsSpaceBeforeUnrenderedMarker[out], AppendTo[out, " "]];
                 AppendTo[out, "\:0192(" <> entries[[n]] <> ")"],
                 AppendTo[out, charSlice[chars, i, next - 1]]
             ];
@@ -246,17 +251,31 @@ reverseWithBlock[block_Association] := Module[
     StringJoin[out]
 ];
 
+collapsePreMarkerHorizontalWhitespace[out_List] := Module[{trimmed = out},
+    While[Length[trimmed] > 0 && horizontalWhitespaceQ[Last[trimmed]],
+        trimmed = Most[trimmed]
+    ];
+    trimmed
+];
+
 renderSource[input_String] := Module[
-    {chars = Characters[input], out = {}, notes = {}, i = 1, parsed, body, blockLines},
+    {chars = Characters[input], out = {}, notes = {}, i = 1, parsed, body, blockLines, significantKind = None},
     While[i <= Length[chars],
         If[startsSourceMarkerQ[chars, i],
             parsed = parseSourceAnnotation[input, chars, i];
             If[failureQ[parsed], Return[parsed]];
             AppendTo[notes, parsed["Text"]];
+            If[significantKind === "Body", out = collapsePreMarkerHorizontalWhitespace[out]];
             AppendTo[out, superscript[Length[notes]]];
+            significantKind = "SourceAnnotation";
             i = parsed["Next"]; Continue[]
         ];
         AppendTo[out, chars[[i]]];
+        Which[
+            lineBreakQ[chars[[i]]], significantKind = "LineBreak",
+            horizontalWhitespaceQ[chars[[i]]], Null,
+            True, significantKind = "Body"
+        ];
         i++
     ];
 

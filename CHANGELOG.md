@@ -2,7 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-This project follows documented release tags. The current initial release is `version-1.0.0`.
+This project follows documented release tags.
+
+## version-2.0.0 - 2026-06-05
+
+### Changed
+
+- Updated rendering for Clear-Text Footnotes specification 2.0.0: horizontal whitespace immediately before a source footnote marker is collapsed when the marker follows same-line body text.
+- Updated unrendering to insert a space before generated source annotations when a rendered inline reference was attached directly to preceding body text.
+- Updated regression tests for the new spacing behavior.
+
+### Breaking
+
+- Inputs such as `word ƒ(note)` now render as `word¹` instead of `word ¹`.
 
 ## version-1.0.0 - 2026-06-05
 
