@@ -27,7 +27,7 @@ Needs["PerDalum`Footnotes`"]
 or to install locally:
 
 ```wl
-PacletInstall["/Users/au15929/src/footnotes-wl/PacletBuild/PerDalum__Footnotes-2.0.0.paclet", ForceVersionInstall -> True]
+PacletInstall["/path/to/footnotes-wl/PacletBuild/PerDalum__Footnotes-2.0.0.paclet", ForceVersionInstall -> True]
 ```
 
 and then
