@@ -1,4 +1,4 @@
-projectRoot = DirectoryName[$InputFileName];
+projectRoot = DirectoryName[DirectoryName[$InputFileName]];
 Get[FileNameJoin[{projectRoot, "Footnotes.wl"}]];
 
 ClearAll[check, checkFailure];

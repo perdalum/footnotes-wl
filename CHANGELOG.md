@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 This project follows documented release tags.
 
+## Unreleased
+
+### Changed
+
+- Switched the public package context from ``Footnotes` `` to ``PerDalum`Footnotes` `` for namespaced paclet loading with ``Needs["PerDalum`Footnotes`"]``.
+- Added Wolfram paclet scaffolding and a build script for creating `.paclet` archives.
+
+### Breaking
+
+- ``Needs["Footnotes`"]`` is no longer the package loading context; use ``Needs["PerDalum`Footnotes`"]``.
+
 ## version-2.0.0 - 2026-06-05
 
 ### Changed
