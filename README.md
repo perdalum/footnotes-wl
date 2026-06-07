@@ -24,6 +24,19 @@ PacletDirectoryLoad["/path/to/footnotes-wl"]
 Needs["PerDalum`Footnotes`"]
 ```
 
+or to install locally:
+
+```wl
+PacletInstall["/Users/au15929/src/footnotes-wl/PacletBuild/PerDalum__Footnotes-2.0.0.paclet", ForceVersionInstall -> True]
+```
+
+and then
+
+```wl
+Needs["PerDalum`Footnotes`"]
+```
+
+
 ## Paclet layout
 
 This repository is ready to build as a Wolfram paclet:
